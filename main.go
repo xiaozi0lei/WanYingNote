@@ -6,20 +6,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/xiaozi0lei/WanYingNote/controller"
 	"log"
-	"runtime"
-	"path"
-	"path/filepath"
 )
 
 func main() {
-
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		panic("No caller information")
-	}
-	currentDir := path.Dir(filename)
-
-	publicDir := filepath.Join(currentDir, "/public")
 
 	// ------ 1. 创建各种路由 ------ //
 	// mux 是一个 router 的中间件，返回 http.Handler，
@@ -36,13 +25,13 @@ func main() {
 	// 默认支持 Recovery、Logger、Static 中间件
 	n := negroni.New()
 	// 设置 public 的映射路径及路由前缀
-	publicContent := negroni.NewStatic(http.Dir(publicDir))
+	publicContent := negroni.NewStatic(http.Dir("./public"))
 	publicContent.Prefix = "/public"
 	n.Use(publicContent)
 	// 设置 public 的映射路径及路由前缀
-	//favicon := negroni.NewStatic(http.Dir(currentDir))
-	//favicon.Prefix = "/favicon.ico"
-	//n.Use(favicon)
+	favicon := negroni.NewStatic(http.Dir("./favicon.ico"))
+	favicon.Prefix = "/favicon.ico"
+	n.Use(favicon)
 	// 使用 negroni 自带的 Logger
 	n.Use(negroni.NewLogger())
 	// 使用 negroni 自带的 Recovery
@@ -53,6 +42,6 @@ func main() {
 	// ------ 3. 加载所有路由和中间件，启动服务器 ------ //
 	// 启动服务器，监听 3000 端口
 	log.Println("Starting the server ...")
-	log.Fatal(http.ListenAndServe(":3000", n))
+	log.Fatal(http.ListenAndServe(":60006", n))
 
 }
