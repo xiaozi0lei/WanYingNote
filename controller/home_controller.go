@@ -10,6 +10,7 @@ import(
 )
 
 func Index(rw http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Host)
 	// 设置返回状态码
 	rw.WriteHeader(http.StatusOK)
 	// 读取主页模板
@@ -19,7 +20,7 @@ func Index(rw http.ResponseWriter, r *http.Request) {
 	// call.
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
-		panic("No caller information")
+		panic("No runtime.Caller information")
 	}
 	currentDir := path.Dir(filename)
 	indexViewFile := filepath.Join(currentDir, "../view/home/index.html")
@@ -34,6 +35,10 @@ func Index(rw http.ResponseWriter, r *http.Request) {
 }
 
 func GetName(rw http.ResponseWriter, r *http.Request) {
-	rw.Write([]byte("GuoLei"))
+	str := `{"page": 1, "fruits": ["apple", "peach"]}`
+	//resp,_ := json.Marshal(str)
 	log.Println(r.Cookies())
+	// normal header
+	//rw.Header().Set("Content-Type", "application/json; charset=utf-8")
+	rw.Write([]byte(str))
 }

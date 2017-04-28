@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-const DefaultRemoteAddr = "localhost:3000"
+//const DefaultRemoteAddr = "localhost:60006"
 
 // 测试主页
 func TestIndex(t *testing.T) {
